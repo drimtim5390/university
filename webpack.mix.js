@@ -14,6 +14,6 @@ const mix = require('laravel-mix');
 mix
     .js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.sass', 'public/css')
-    .vue({ version: 2 })
+    .vue({version: 2})
     .browserSync('http://localhost:8000/')
     .version();

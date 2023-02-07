@@ -1,28 +1,52 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <el-container>
+      <el-aside width="250px">
+        <div class="brand-name">
+          University
+          Timetable
+        </div>
+      </el-aside>
+      <el-container>
+        <el-header>
+        </el-header>
+        <el-main>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  components: {}
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  margin: 0;
+}
+
+.el-aside {
+  background: #6d29a8;
+  color: white;
+  min-height: 100vh;
+}
+
+.brand-name {
+  background: indigo;
+  padding: 8px 20px;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.el-menu {
+  border-right: 0 !important;
+}
+
+.el-main {
+  background: #e8e8e8;
 }
 </style>
