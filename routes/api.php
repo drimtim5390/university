@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('subjects/count', [\App\Http\Controllers\SubjectController::class, 'count']);
 Route::apiResources([
-    'subjects' => \App\Http\Controllers\SubjectController::class
+    'subjects' => \App\Http\Controllers\SubjectController::class,
+    'teachers' => \App\Http\Controllers\TeacherController::class
 ]);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

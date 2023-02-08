@@ -1,8 +1,8 @@
 <template>
   <el-dialog title="Create Subject" :visible="visible" :show-close="false">
-    <el-form labelPosition="right" :model="form" :rules="rules" ref="subjectCreateForm">
+    <el-form labelPosition="right" :model="form" :rules="rules" ref="subjectCreateForm" @submit.native.prevent>
       <el-form-item label="Name" prop="name">
-        <el-input v-model="form.name"></el-input>
+        <el-input v-model="form.name"/>
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -18,10 +18,21 @@ export default {
   props: {
     visible: Boolean
   },
+  watch: {
+    visible(visible) {
+      if (visible) {
+        this.$refs['subjectCreateForm']?.resetFields()
+        this.form.clear()
+      }
+    }
+  },
   data() {
     return {
       form: {
-        name: ''
+        name: '',
+        clear() {
+          this.name = ''
+        }
       },
       rules: {
         name: [

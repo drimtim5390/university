@@ -94,7 +94,9 @@ class SubjectController extends Controller
             ->when(request()->filled('name'), function ($query) {
                 $query->where('name', request()->query('name'));
             })
-            ->get();
+            ->get()
+            ->pluck('id')
+            ->toArray();
 
         return response()->json($result);
     }

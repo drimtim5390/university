@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateSubjectRequest extends FormRequest
+class StoreTeacherRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,11 @@ class UpdateSubjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required', 'string', 'min:2', 'max:255', 'unique:subjects,name,' . $this->id
+            'first_name' => [
+                'required', 'string', 'min:2', 'max:50'
+            ],
+            'last_name' => [
+                'required', 'string', 'min:2', 'max:50'
             ]
         ];
     }

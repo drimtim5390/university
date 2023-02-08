@@ -1,6 +1,6 @@
 <template>
   <el-dialog :title="`Edit Subject #${subject.id}`" :visible="visible" :show-close="false">
-    <el-form labelPosition="right" :model="form" :rules="rules" ref="subjectEditForm">
+    <el-form labelPosition="right" :model="form" :rules="rules" ref="subjectEditForm" @submit.native.prevent>
       <el-form-item label="Name" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -14,20 +14,26 @@
 
 <script>
 export default {
-  name: "EditSubjectDailog",
+  name: "EditSubjectDialog",
   props: {
-    visible: Boolean,
-    subject: null
+    subject: null,
+    visible: Boolean
   },
   watch: {
-    subject(subject) {
-      this.form.name = subject.name
+    visible(visible) {
+      if (visible) {
+        this.$refs['subjectEditForm']?.resetFields()
+        this.form.fill(this.subject)
+      }
     }
   },
   data() {
     return {
       form: {
-        name: ''
+        name: '',
+        fill(subject) {
+          this.name = subject.name
+        }
       },
       rules: {
         name: [
@@ -43,14 +49,12 @@ export default {
       this.$refs['subjectEditForm'].validate((valid) => {
         if (valid) {
           this.$emit('save', {...this.subject, ...this.form})
-          this.$refs['subjectEditForm'].resetFields()
         } else {
           return false
         }
       });
     },
     close() {
-      this.$refs['subjectEditForm'].resetFields()
       this.$emit('close')
     },
     validateName(rule, value, callback) {

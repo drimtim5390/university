@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreSubjectRequest extends FormRequest
 {
@@ -26,7 +25,7 @@ class StoreSubjectRequest extends FormRequest
     {
         return [
             'name' => [
-                'required', 'min:2', 'max:255', Rule::unique('subjects', 'name')
+                'required', 'string', 'min:2', 'max:255', 'unique:subjects,name'
             ]
         ];
     }

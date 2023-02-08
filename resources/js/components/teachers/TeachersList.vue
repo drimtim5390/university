@@ -1,6 +1,6 @@
 <template>
   <el-table
-    :data="subjects"
+    :data="teachers"
     style="width: 100%">
     <el-table-column
       fixed
@@ -9,8 +9,12 @@
       width="120">
     </el-table-column>
     <el-table-column
-      prop="name"
-      label="Name">
+      prop="first_name"
+      label="First Name">
+    </el-table-column>
+    <el-table-column
+      prop="last_name"
+      label="Last Name">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -27,9 +31,9 @@
 
 <script>
 export default {
-  name: "SubjectsList",
+  name: "TeachersList",
   props: {
-    subjects: []
+    teachers: []
   }
 }
 </script>

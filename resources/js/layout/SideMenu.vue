@@ -14,6 +14,10 @@
         <i class="el-icon-notebook-1"></i>
         <span>Subjects</span>
       </el-menu-item>
+      <el-menu-item index="teachers">
+        <i class="el-icon-user-solid"></i>
+        <span>Teachers</span>
+      </el-menu-item>
   </el-menu>
 </template>
 

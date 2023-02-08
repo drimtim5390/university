@@ -2,13 +2,13 @@
   <el-container direction="vertical">
     <el-row class="mb-20">
       <el-col :span="12" class="text-header">
-        Subjects
+        Teachers
       </el-col>
       <el-col :span="12">
         <el-row type="flex" justify="end">
           <el-col :span="18">
             <el-input
-              v-model="params.name"
+              v-model="params.full_name"
               size="small"
               placeholder="Type to search"/>
           </el-col>
@@ -18,27 +18,27 @@
         </el-row>
       </el-col>
     </el-row>
-    <CreateSubjectDialog :visible="createDialogVisible"
-                         @save="storeSubject"
+    <CreateTeacherDialog :visible="createDialogVisible"
+                         @save="storeTeacher"
                          @close="createDialogVisible = false"/>
-    <EditSubjectDialog :subject="editDialogSubject"
+    <EditTeacherDialog :teacher="editDialogTeacher"
                        :visible="editDialogVisible"
-                       @save="updateSubject"
+                       @save="updateTeacher"
                        @close="editDialogVisible = false"/>
-    <DeleteDialog :message="'Do you really want to delete a subject with id #' + deleteDialogSubject.id"
-                  :itemName="'Subject'"
-                  :item="deleteDialogSubject"
+    <DeleteDialog :message="'Do you really want to delete a teacher with id #' + deleteDialogTeacher.id"
+                  :itemName="'Teacher'"
+                  :item="deleteDialogTeacher"
                   :visible="deleteDialogVisible"
-                  @confirm="deleteSubject"
+                  @confirm="deleteTeacher"
                   @close="deleteDialogVisible = false"/>
-    <SubjectsList :subjects="subjects"
-                  @search="getSubjects"
+    <TeachersList :teachers="teachers"
+                  @search="getTeachers"
                   @showEditDialog="showEditDialog"
                   @showDeleteDialog="showDeleteDialog"/>
     <el-row type="flex" justify="end">
       <el-pagination
-        @size-change="getSubjects"
-        @current-change="getSubjects"
+        @size-change="getTeachers"
+        @current-change="getTeachers"
         :current-page.sync="params.page"
         :page-sizes="[10, 20, 30, 40, 50, 100]"
         :page-size.sync="params.size"
@@ -50,99 +50,99 @@
 </template>
 
 <script>
-import CreateSubjectDialog from "../components/subjects/CreateSubjectDialog.vue";
-import EditSubjectDialog from "../components/subjects/EditSubjectDialog.vue";
-import SubjectsList from "../components/subjects/SubjectsList.vue";
+import CreateTeacherDialog from "../components/teachers/CreateTeacherDialog.vue";
+import EditTeacherDialog from "../components/teachers/EditTeacherDialog.vue";
+import TeachersList from "../components/teachers/TeachersList.vue";
 import DeleteDialog from "../components/DeleteDialog.vue";
 
 export default {
-  name: "SubjectsPage",
-  components: {CreateSubjectDialog, DeleteDialog, EditSubjectDialog, SubjectsList},
+  name: "TeachersPage",
+  components: {CreateTeacherDialog, DeleteDialog, EditTeacherDialog, TeachersList},
   data() {
     return {
       total: 0,
-      subjects: [],
+      teachers: [],
       createDialogVisible: false,
       editDialogVisible: false,
-      editDialogSubject: {id: 0},
+      editDialogTeacher: {id: 0},
       deleteDialogVisible: false,
-      deleteDialogSubject: {id: 0},
+      deleteDialogTeacher: {id: 0},
       params: {
         size: 10,
         page: 1,
-        name: ''
+        full_name: ''
       },
       timeout: null
     }
   },
   mounted() {
-    this.getSubjects();
+    this.getTeachers();
   },
   watch: {
     params: {
       handler() {
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
-          this.getSubjects(this.name)
+          this.getTeachers(this.name)
         }, 500)
       },
       deep: true
     }
   },
   methods: {
-    async getSubjects() {
-      await this.axios.get('/subjects', {
+    async getTeachers() {
+      await this.axios.get('/teachers', {
         params: this.params
       })
         .then(response => {
-          this.subjects = response.data.data
+          this.teachers = response.data.data
           this.total = response.data.total
         })
         .catch(() => {
-          this.subjects = []
+          this.teachers = []
         })
     },
     showCreateDialog() {
       this.createDialogVisible = true
     },
-    showEditDialog(subject) {
-      this.editDialogSubject = subject
+    showEditDialog(teacher) {
+      this.editDialogTeacher = teacher
       this.editDialogVisible = true
     },
-    showDeleteDialog(subject) {
-      this.deleteDialogSubject = subject
+    showDeleteDialog(teacher) {
+      this.deleteDialogTeacher = teacher
       this.deleteDialogVisible = true
     },
-    storeSubject(subject) {
-      this.axios.post('/subjects', subject)
+    storeTeacher(teacher) {
+      this.axios.post('/teachers', teacher)
         .then(() => {
           this.$message({
-            message: 'Subject has successfully been created',
+            message: 'Teacher has successfully been created',
             type: 'success'
           })
           this.createDialogVisible = false;
-          this.getSubjects()
+          this.getTeachers()
         })
     },
-    updateSubject(subject) {
-      this.axios.put(`/subjects/${subject.id}`, subject)
+    updateTeacher(teacher) {
+      this.axios.put(`/teachers/${teacher.id}`, teacher)
         .then(() => {
           this.$message({
-            message: 'Subject has successfully been updated',
+            message: 'Teacher has successfully been updated',
             type: 'success'
           })
           this.editDialogVisible = false;
-          this.getSubjects()
+          this.getTeachers()
         })
     },
-    deleteSubject(id) {
-      this.axios.delete(`/subjects/${id}`)
+    deleteTeacher(id) {
+      this.axios.delete(`/teachers/${id}`)
         .then(() => {
           this.$message({
-            message: 'Subject has successfully been deleted',
+            message: 'Teacher has successfully been deleted',
             type: 'success'
           })
-          this.getSubjects()
+          this.getTeachers()
         })
       this.deleteDialogVisible = false
     }

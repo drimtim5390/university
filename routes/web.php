@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/{slug?}', function ($slug = '') {
+    if (!in_array($slug, ['', 'subjects', 'teachers'])) {
+        return abort(404);
+    }
     return view('welcome');
 });
