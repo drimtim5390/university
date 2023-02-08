@@ -1,12 +1,23 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router'
+import VueAxios from 'vue-axios'
+import axios from 'axios'
 import ElementUI from 'element-ui'
 /* eslint-disable */
 import './assets/elements-variable.scss'
-import App from './App.vue'
+import locale from 'element-ui/lib/locale/lang/en'
+import router from './router'
+import App from './App.vue';
 
 Vue.config.productionTip = false
-Vue.use(ElementUI)
+Vue.use(ElementUI, {locale})
+Vue.use(VueRouter);
+
+axios.defaults.baseURL = 'http://university.test/api'
+Vue.use(VueAxios, axios)
 
 new Vue({
-    render: h => h(App),
-}).$mount('#app')
+    el: '#app',
+    router: router,
+    render: h => h(App)
+})

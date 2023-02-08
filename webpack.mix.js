@@ -15,5 +15,5 @@ mix
     .js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.sass', 'public/css')
     .vue({version: 2})
-    .browserSync('http://localhost:8000/')
+    .browserSync('http://university.test/')
     .version();

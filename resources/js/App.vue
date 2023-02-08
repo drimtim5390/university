@@ -1,26 +1,32 @@
 <template>
-  <div id="app">
+  <el-container>
+    <el-aside width="250px">
+      <div class="brand-name">
+        University
+        Timetable
+      </div>
+      <SideMenu/>
+    </el-aside>
     <el-container>
-      <el-aside width="250px">
-        <div class="brand-name">
-          University
-          Timetable
-        </div>
-      </el-aside>
-      <el-container>
-        <el-header>
-        </el-header>
-        <el-main>
-        </el-main>
-      </el-container>
+      <el-header>
+        <BreadCrumb/>
+      </el-header>
+      <el-main>
+        <router-view/>
+      </el-main>
     </el-container>
-  </div>
+  </el-container>
 </template>
 
 <script>
+import SideMenu from './layout/SideMenu.vue'
+import BreadCrumb from './layout/BreadCrumb.vue';
 export default {
   name: 'App',
-  components: {}
+  components: {
+    SideMenu,
+    BreadCrumb
+  }
 }
 </script>
 
@@ -29,24 +35,15 @@ body {
   margin: 0;
 }
 
-.el-aside {
-  background: #6d29a8;
-  color: white;
-  min-height: 100vh;
+.mb-20 {
+  margin-bottom: 20px;
 }
 
-.brand-name {
-  background: indigo;
-  padding: 8px 20px;
-  font-size: 1.2rem;
-  text-transform: uppercase;
+.text-header {
+  font-size: 1.5rem;
 }
 
-.el-menu {
-  border-right: 0 !important;
-}
-
-.el-main {
-  background: #e8e8e8;
+.text-align-right {
+  text-align: right;
 }
 </style>
