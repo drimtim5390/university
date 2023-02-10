@@ -2,13 +2,13 @@
   <el-container direction="vertical">
     <el-row class="mb-20">
       <el-col :span="12" class="text-header">
-        Teachers
+        Groups
       </el-col>
       <el-col :span="12">
         <el-row type="flex" justify="end">
           <el-col :span="18">
             <el-input
-              v-model="params.full_name"
+              v-model="params.label"
               size="small"
               placeholder="Type to search"/>
           </el-col>
@@ -18,27 +18,27 @@
         </el-row>
       </el-col>
     </el-row>
-    <CreateTeacherDialog :visible="createDialogVisible"
-                         @save="storeTeacher"
+    <CreateGroupDialog :visible="createDialogVisible"
+                         @save="storeGroup"
                          @close="createDialogVisible = false"/>
-    <EditTeacherDialog :teacher="editDialogTeacher"
+    <EditGroupDialog :group="editDialogGroup"
                        :visible="editDialogVisible"
-                       @save="updateTeacher"
+                       @save="updateGroup"
                        @close="editDialogVisible = false"/>
-    <DeleteDialog :message="'Do you really want to delete a teacher with id #' + deleteDialogTeacher.id"
-                  :itemName="'Teacher'"
-                  :item="deleteDialogTeacher"
+    <DeleteDialog :message="'Do you really want to delete a group with id #' + deleteDialogGroup.id"
+                  :itemName="'Group'"
+                  :item="deleteDialogGroup"
                   :visible="deleteDialogVisible"
-                  @confirm="deleteTeacher"
+                  @confirm="deleteGroup"
                   @close="deleteDialogVisible = false"/>
-    <TeachersList :teachers="teachers"
-                  @search="getTeachers"
+    <GroupsList :groups="groups"
+                  @search="getGroups"
                   @showEditDialog="showEditDialog"
                   @showDeleteDialog="showDeleteDialog"/>
     <el-row type="flex" justify="end">
       <el-pagination
-        @size-change="getTeachers"
-        @current-change="getTeachers"
+        @size-change="getGroups"
+        @current-change="getGroups"
         :current-page.sync="params.page"
         :page-sizes="[10, 20, 30, 40, 50, 100]"
         :page-size.sync="params.size"
@@ -50,99 +50,99 @@
 </template>
 
 <script>
-import CreateTeacherDialog from "../components/teachers/CreateTeacherDialog.vue";
-import EditTeacherDialog from "../components/teachers/EditTeacherDialog.vue";
-import TeachersList from "../components/teachers/TeachersList.vue";
+import CreateGroupDialog from "../components/groups/CreateGroupDialog.vue";
+import EditGroupDialog from "../components/groups/EditGroupDialog.vue";
+import GroupsList from "../components/groups/GroupsList.vue";
 import DeleteDialog from "../components/DeleteDialog.vue";
 
 export default {
-  name: "TeachersPage",
-  components: {CreateTeacherDialog, DeleteDialog, EditTeacherDialog, TeachersList},
+  name: "GroupsPage",
+  components: {CreateGroupDialog, DeleteDialog, EditGroupDialog, GroupsList},
   data() {
     return {
       total: 0,
-      teachers: [],
+      groups: [],
       createDialogVisible: false,
       editDialogVisible: false,
-      editDialogTeacher: {id: 0},
+      editDialogGroup: {id: 0},
       deleteDialogVisible: false,
-      deleteDialogTeacher: {id: 0},
+      deleteDialogGroup: {id: 0},
       params: {
         size: 10,
         page: 1,
-        full_name: ''
+        label: ''
       },
       timeout: null
     }
   },
   mounted() {
-    this.getTeachers();
+    this.getGroups();
   },
   watch: {
     params: {
       handler() {
         clearTimeout(this.timeout);
         this.timeout = setTimeout(() => {
-          this.getTeachers()
+          this.getGroups()
         }, 500)
       },
       deep: true
     }
   },
   methods: {
-    async getTeachers() {
-      await this.axios.get('/teachers', {
+    async getGroups() {
+      await this.axios.get('/groups', {
         params: this.params
       })
         .then(response => {
-          this.teachers = response.data.data
+          this.groups = response.data.data
           this.total = response.data.total
         })
         .catch(() => {
-          this.teachers = []
+          this.groups = []
         })
     },
     showCreateDialog() {
       this.createDialogVisible = true
     },
-    showEditDialog(teacher) {
-      this.editDialogTeacher = teacher
+    showEditDialog(group) {
+      this.editDialogGroup = group
       this.editDialogVisible = true
     },
-    showDeleteDialog(teacher) {
-      this.deleteDialogTeacher = teacher
+    showDeleteDialog(group) {
+      this.deleteDialogGroup = group
       this.deleteDialogVisible = true
     },
-    storeTeacher(teacher) {
-      this.axios.post('/teachers', teacher)
+    storeGroup(group) {
+      this.axios.post('/groups', group)
         .then(() => {
           this.$message({
-            message: 'Teacher has successfully been created',
+            message: 'Group has successfully been created',
             type: 'success'
           })
           this.createDialogVisible = false;
-          this.getTeachers()
+          this.getGroups()
         })
     },
-    updateTeacher(teacher) {
-      this.axios.put(`/teachers/${teacher.id}`, teacher)
+    updateGroup(group) {
+      this.axios.put(`/groups/${group.id}`, group)
         .then(() => {
           this.$message({
-            message: 'Teacher has successfully been updated',
+            message: 'Group has successfully been updated',
             type: 'success'
           })
           this.editDialogVisible = false;
-          this.getTeachers()
+          this.getGroups()
         })
     },
-    deleteTeacher(id) {
-      this.axios.delete(`/teachers/${id}`)
+    deleteGroup(id) {
+      this.axios.delete(`/groups/${id}`)
         .then(() => {
           this.$message({
-            message: 'Teacher has successfully been deleted',
+            message: 'Group has successfully been deleted',
             type: 'success'
           })
-          this.getTeachers()
+          this.getGroups()
         })
       this.deleteDialogVisible = false
     }

@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('subjects/count', [\App\Http\Controllers\SubjectController::class, 'count']);
+Route::get('groups/count', [\App\Http\Controllers\GroupController::class, 'count']);
 Route::apiResources([
     'subjects' => \App\Http\Controllers\SubjectController::class,
-    'teachers' => \App\Http\Controllers\TeacherController::class
+    'teachers' => \App\Http\Controllers\TeacherController::class,
+    'groups' => \App\Http\Controllers\GroupController::class
 ]);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
