@@ -14,12 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('subjects/count', [\App\Http\Controllers\SubjectController::class, 'count']);
 Route::get('groups/count', [\App\Http\Controllers\GroupController::class, 'count']);
+Route::get('rooms/count', [\App\Http\Controllers\RoomController::class, 'count']);
+Route::get('subjects/count', [\App\Http\Controllers\SubjectController::class, 'count']);
 Route::apiResources([
     'subjects' => \App\Http\Controllers\SubjectController::class,
     'teachers' => \App\Http\Controllers\TeacherController::class,
-    'groups' => \App\Http\Controllers\GroupController::class
+    'groups' => \App\Http\Controllers\GroupController::class,
+    'rooms' => \App\Http\Controllers\RoomController::class
 ]);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

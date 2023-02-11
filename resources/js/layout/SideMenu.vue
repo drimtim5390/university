@@ -14,6 +14,10 @@
         <i class="el-icon-s-operation"></i>
         <span>Groups</span>
       </el-menu-item>
+      <el-menu-item index="rooms">
+        <i class="el-icon-files"></i>
+        <span>Rooms</span>
+      </el-menu-item>
       <el-menu-item index="teachers">
         <i class="el-icon-user-solid"></i>
         <span>Teachers</span>
