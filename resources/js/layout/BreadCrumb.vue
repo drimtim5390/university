@@ -1,8 +1,5 @@
 <template>
   <el-container>
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{name: 'timetable'}">Timetable</el-breadcrumb-item>
-    </el-breadcrumb>
   </el-container>
 </template>
 

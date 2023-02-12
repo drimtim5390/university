@@ -1,14 +1,14 @@
 import VueRouter from 'vue-router'
 
-import TimeTable from './pages/TimeTable.vue';
-import GroupsPage from './pages/GroupsPage.vue';
-import RoomsPage from './pages/RoomsPage.vue';
-import SubjectsPage from './pages/SubjectsPage.vue';
-import TeachersPage from './pages/TeachersPage.vue';
+import TimetablePage from './pages/TimetablePage.vue'
+import GroupsPage from './pages/GroupsPage.vue'
+import RoomsPage from './pages/RoomsPage.vue'
+import SubjectsPage from './pages/SubjectsPage.vue'
+import TeachersPage from './pages/TeachersPage.vue'
 
 const routes = [
     {
-        path: '/', component: TimeTable, name: 'timetable'
+        path: '/', component: TimetablePage, name: 'timetable'
     },
     {
         path: '/groups', component: GroupsPage, name: 'groups'

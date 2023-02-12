@@ -52,14 +52,14 @@ export default {
         } else {
           return false
         }
-      });
+      })
     },
     close() {
       this.$refs['roomCreateForm'].resetFields()
       this.$emit('close')
     },
     validateLabel(rule, value, callback) {
-      this.axios.get('/rooms/count?label=' + value)
+      this.axios.get('/api/rooms/count?label=' + value)
         .then((response) => {
           if (response.data.length > 0) {
             callback(new Error('Room already exists'))

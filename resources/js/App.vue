@@ -20,7 +20,7 @@
 
 <script>
 import SideMenu from './layout/SideMenu.vue'
-import BreadCrumb from './layout/BreadCrumb.vue';
+import BreadCrumb from './layout/BreadCrumb.vue'
 export default {
   name: 'App',
   components: {

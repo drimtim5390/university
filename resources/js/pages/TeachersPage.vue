@@ -32,7 +32,6 @@
                   @confirm="deleteTeacher"
                   @close="deleteDialogVisible = false"/>
     <TeachersList :teachers="teachers"
-                  @search="getTeachers"
                   @showEditDialog="showEditDialog"
                   @showDeleteDialog="showDeleteDialog"/>
     <el-row type="flex" justify="end">
@@ -50,10 +49,10 @@
 </template>
 
 <script>
-import CreateTeacherDialog from "../components/teachers/CreateTeacherDialog.vue";
-import EditTeacherDialog from "../components/teachers/EditTeacherDialog.vue";
-import TeachersList from "../components/teachers/TeachersList.vue";
-import DeleteDialog from "../components/DeleteDialog.vue";
+import CreateTeacherDialog from "../components/teachers/CreateTeacherDialog.vue"
+import EditTeacherDialog from "../components/teachers/EditTeacherDialog.vue"
+import TeachersList from "../components/teachers/TeachersList.vue"
+import DeleteDialog from "../components/DeleteDialog.vue"
 
 export default {
   name: "TeachersPage",
@@ -76,12 +75,12 @@ export default {
     }
   },
   mounted() {
-    this.getTeachers();
+    this.getTeachers()
   },
   watch: {
     params: {
       handler() {
-        clearTimeout(this.timeout);
+        clearTimeout(this.timeout)
         this.timeout = setTimeout(() => {
           this.getTeachers()
         }, 500)
@@ -91,7 +90,7 @@ export default {
   },
   methods: {
     async getTeachers() {
-      await this.axios.get('/teachers', {
+      await this.axios.get('/api/teachers', {
         params: this.params
       })
         .then(response => {
@@ -114,29 +113,29 @@ export default {
       this.deleteDialogVisible = true
     },
     storeTeacher(teacher) {
-      this.axios.post('/teachers', teacher)
+      this.axios.post('/api/teachers', teacher)
         .then(() => {
           this.$message({
             message: 'Teacher has successfully been created',
             type: 'success'
           })
-          this.createDialogVisible = false;
+          this.createDialogVisible = false
           this.getTeachers()
         })
     },
     updateTeacher(teacher) {
-      this.axios.put(`/teachers/${teacher.id}`, teacher)
+      this.axios.put(`/api/teachers/${teacher.id}`, teacher)
         .then(() => {
           this.$message({
             message: 'Teacher has successfully been updated',
             type: 'success'
           })
-          this.editDialogVisible = false;
+          this.editDialogVisible = false
           this.getTeachers()
         })
     },
     deleteTeacher(id) {
-      this.axios.delete(`/teachers/${id}`)
+      this.axios.delete(`/api/teachers/${id}`)
         .then(() => {
           this.$message({
             message: 'Teacher has successfully been deleted',

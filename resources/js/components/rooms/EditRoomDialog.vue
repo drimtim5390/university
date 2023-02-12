@@ -52,13 +52,13 @@ export default {
         } else {
           return false
         }
-      });
+      })
     },
     close() {
       this.$emit('close')
     },
     validateLabel(rule, value, callback) {
-      this.axios.get('/rooms/count?label=' + value)
+      this.axios.get('/api/rooms/count?label=' + value)
         .then((response) => {
           if ((response.data.length === 0) ||
               (response.data.length === 1 && response.data[0] === this.room.id)) {

@@ -52,13 +52,13 @@ export default {
         } else {
           return false
         }
-      });
+      })
     },
     close() {
       this.$emit('close')
     },
     validateName(rule, value, callback) {
-      this.axios.get('/subjects/count?name=' + value)
+      this.axios.get('/api/subjects/count?name=' + value)
         .then((response) => {
           if ((response.data.length === 0) ||
               (response.data.length === 1 && response.data[0] === this.subject.id)) {

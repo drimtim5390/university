@@ -14,8 +14,9 @@ class SubjectSeeder extends Seeder
      */
     public function run()
     {
+        Subject::getQuery()->delete();
         Subject::factory()
-            ->count(50)
+            ->count(10)
             ->create();
     }
 }

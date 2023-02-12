@@ -52,14 +52,14 @@ export default {
         } else {
           return false
         }
-      });
+      })
     },
     close() {
       this.$refs['subjectCreateForm'].resetFields()
       this.$emit('close')
     },
     validateName(rule, value, callback) {
-      this.axios.get('/subjects/count?name=' + value)
+      this.axios.get('/api/subjects/count?name=' + value)
         .then((response) => {
           if (response.data.length > 0) {
             callback(new Error('Subject already exists'))

@@ -15,8 +15,9 @@ class RoomSeeder extends Seeder
      */
     public function run()
     {
+        Room::getQuery()->delete();
         Room::factory()
-            ->count(10)
+            ->count(5)
             ->create();
     }
 }

@@ -19,12 +19,12 @@
       </el-col>
     </el-row>
     <CreateRoomDialog :visible="createDialogVisible"
-                         @save="storeRoom"
-                         @close="createDialogVisible = false"/>
+                      @save="storeRoom"
+                      @close="createDialogVisible = false"/>
     <EditRoomDialog :room="editDialogRoom"
-                       :visible="editDialogVisible"
-                       @save="updateRoom"
-                       @close="editDialogVisible = false"/>
+                    :visible="editDialogVisible"
+                    @save="updateRoom"
+                    @close="editDialogVisible = false"/>
     <DeleteDialog :message="'Do you really want to delete a room with id #' + deleteDialogRoom.id"
                   :itemName="'Room'"
                   :item="deleteDialogRoom"
@@ -32,9 +32,8 @@
                   @confirm="deleteRoom"
                   @close="deleteDialogVisible = false"/>
     <RoomsList :rooms="rooms"
-                  @search="getRooms"
-                  @showEditDialog="showEditDialog"
-                  @showDeleteDialog="showDeleteDialog"/>
+               @showEditDialog="showEditDialog"
+               @showDeleteDialog="showDeleteDialog"/>
     <el-row type="flex" justify="end">
       <el-pagination
         @size-change="getRooms"
@@ -50,10 +49,10 @@
 </template>
 
 <script>
-import CreateRoomDialog from "../components/rooms/CreateRoomDialog.vue";
-import EditRoomDialog from "../components/rooms/EditRoomDialog.vue";
-import RoomsList from "../components/rooms/RoomsList.vue";
-import DeleteDialog from "../components/DeleteDialog.vue";
+import CreateRoomDialog from "../components/rooms/CreateRoomDialog.vue"
+import EditRoomDialog from "../components/rooms/EditRoomDialog.vue"
+import RoomsList from "../components/rooms/RoomsList.vue"
+import DeleteDialog from "../components/DeleteDialog.vue"
 
 export default {
   name: "RoomsPage",
@@ -76,12 +75,12 @@ export default {
     }
   },
   mounted() {
-    this.getRooms();
+    this.getRooms()
   },
   watch: {
     params: {
       handler() {
-        clearTimeout(this.timeout);
+        clearTimeout(this.timeout)
         this.timeout = setTimeout(() => {
           this.getRooms()
         }, 500)
@@ -91,7 +90,7 @@ export default {
   },
   methods: {
     async getRooms() {
-      await this.axios.get('/rooms', {
+      await this.axios.get('/api/rooms', {
         params: this.params
       })
         .then(response => {
@@ -114,29 +113,29 @@ export default {
       this.deleteDialogVisible = true
     },
     storeRoom(room) {
-      this.axios.post('/rooms', room)
+      this.axios.post('/api/rooms', room)
         .then(() => {
           this.$message({
             message: 'Room has successfully been created',
             type: 'success'
           })
-          this.createDialogVisible = false;
+          this.createDialogVisible = false
           this.getRooms()
         })
     },
     updateRoom(room) {
-      this.axios.put(`/rooms/${room.id}`, room)
+      this.axios.put(`/api/rooms/${room.id}`, room)
         .then(() => {
           this.$message({
             message: 'Room has successfully been updated',
             type: 'success'
           })
-          this.editDialogVisible = false;
+          this.editDialogVisible = false
           this.getRooms()
         })
     },
     deleteRoom(id) {
-      this.axios.delete(`/rooms/${id}`)
+      this.axios.delete(`/api/rooms/${id}`)
         .then(() => {
           this.$message({
             message: 'Room has successfully been deleted',

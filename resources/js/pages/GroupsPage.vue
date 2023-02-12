@@ -32,7 +32,6 @@
                   @confirm="deleteGroup"
                   @close="deleteDialogVisible = false"/>
     <GroupsList :groups="groups"
-                  @search="getGroups"
                   @showEditDialog="showEditDialog"
                   @showDeleteDialog="showDeleteDialog"/>
     <el-row type="flex" justify="end">
@@ -50,10 +49,10 @@
 </template>
 
 <script>
-import CreateGroupDialog from "../components/groups/CreateGroupDialog.vue";
-import EditGroupDialog from "../components/groups/EditGroupDialog.vue";
-import GroupsList from "../components/groups/GroupsList.vue";
-import DeleteDialog from "../components/DeleteDialog.vue";
+import CreateGroupDialog from "../components/groups/CreateGroupDialog.vue"
+import EditGroupDialog from "../components/groups/EditGroupDialog.vue"
+import GroupsList from "../components/groups/GroupsList.vue"
+import DeleteDialog from "../components/DeleteDialog.vue"
 
 export default {
   name: "GroupsPage",
@@ -76,12 +75,12 @@ export default {
     }
   },
   mounted() {
-    this.getGroups();
+    this.getGroups()
   },
   watch: {
     params: {
       handler() {
-        clearTimeout(this.timeout);
+        clearTimeout(this.timeout)
         this.timeout = setTimeout(() => {
           this.getGroups()
         }, 500)
@@ -91,7 +90,7 @@ export default {
   },
   methods: {
     async getGroups() {
-      await this.axios.get('/groups', {
+      await this.axios.get('/api/groups', {
         params: this.params
       })
         .then(response => {
@@ -114,29 +113,29 @@ export default {
       this.deleteDialogVisible = true
     },
     storeGroup(group) {
-      this.axios.post('/groups', group)
+      this.axios.post('/api/groups', group)
         .then(() => {
           this.$message({
             message: 'Group has successfully been created',
             type: 'success'
           })
-          this.createDialogVisible = false;
+          this.createDialogVisible = false
           this.getGroups()
         })
     },
     updateGroup(group) {
-      this.axios.put(`/groups/${group.id}`, group)
+      this.axios.put(`/api/groups/${group.id}`, group)
         .then(() => {
           this.$message({
             message: 'Group has successfully been updated',
             type: 'success'
           })
-          this.editDialogVisible = false;
+          this.editDialogVisible = false
           this.getGroups()
         })
     },
     deleteGroup(id) {
-      this.axios.delete(`/groups/${id}`)
+      this.axios.delete(`/api/groups/${id}`)
         .then(() => {
           this.$message({
             message: 'Group has successfully been deleted',

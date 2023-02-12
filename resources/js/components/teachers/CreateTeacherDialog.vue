@@ -59,7 +59,7 @@ export default {
         } else {
           return false
         }
-      });
+      })
     },
     close() {
       this.$emit('close')

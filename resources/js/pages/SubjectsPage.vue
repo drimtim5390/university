@@ -32,7 +32,6 @@
                   @confirm="deleteSubject"
                   @close="deleteDialogVisible = false"/>
     <SubjectsList :subjects="subjects"
-                  @search="getSubjects"
                   @showEditDialog="showEditDialog"
                   @showDeleteDialog="showDeleteDialog"/>
     <el-row type="flex" justify="end">
@@ -50,10 +49,10 @@
 </template>
 
 <script>
-import CreateSubjectDialog from "../components/subjects/CreateSubjectDialog.vue";
-import EditSubjectDialog from "../components/subjects/EditSubjectDialog.vue";
-import SubjectsList from "../components/subjects/SubjectsList.vue";
-import DeleteDialog from "../components/DeleteDialog.vue";
+import CreateSubjectDialog from "../components/subjects/CreateSubjectDialog.vue"
+import EditSubjectDialog from "../components/subjects/EditSubjectDialog.vue"
+import SubjectsList from "../components/subjects/SubjectsList.vue"
+import DeleteDialog from "../components/DeleteDialog.vue"
 
 export default {
   name: "SubjectsPage",
@@ -76,12 +75,12 @@ export default {
     }
   },
   mounted() {
-    this.getSubjects();
+    this.getSubjects()
   },
   watch: {
     params: {
       handler() {
-        clearTimeout(this.timeout);
+        clearTimeout(this.timeout)
         this.timeout = setTimeout(() => {
           this.getSubjects(this.name)
         }, 500)
@@ -91,7 +90,7 @@ export default {
   },
   methods: {
     async getSubjects() {
-      await this.axios.get('/subjects', {
+      await this.axios.get('/api/subjects', {
         params: this.params
       })
         .then(response => {
@@ -114,29 +113,29 @@ export default {
       this.deleteDialogVisible = true
     },
     storeSubject(subject) {
-      this.axios.post('/subjects', subject)
+      this.axios.post('/api/subjects', subject)
         .then(() => {
           this.$message({
             message: 'Subject has successfully been created',
             type: 'success'
           })
-          this.createDialogVisible = false;
+          this.createDialogVisible = false
           this.getSubjects()
         })
     },
     updateSubject(subject) {
-      this.axios.put(`/subjects/${subject.id}`, subject)
+      this.axios.put(`/api/subjects/${subject.id}`, subject)
         .then(() => {
           this.$message({
             message: 'Subject has successfully been updated',
             type: 'success'
           })
-          this.editDialogVisible = false;
+          this.editDialogVisible = false
           this.getSubjects()
         })
     },
     deleteSubject(id) {
-      this.axios.delete(`/subjects/${id}`)
+      this.axios.delete(`/api/subjects/${id}`)
         .then(() => {
           this.$message({
             message: 'Subject has successfully been deleted',

@@ -15,7 +15,9 @@ class TeacherSeeder extends Seeder
      */
     public function run()
     {
+        Teacher::getQuery()->delete();
         Teacher::factory()
-            ->count(50)
-            ->create();    }
+            ->count(20)
+            ->create();
+    }
 }

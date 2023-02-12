@@ -15,6 +15,7 @@ class GroupSeeder extends Seeder
      */
     public function run()
     {
+        Group::getQuery()->delete();
         Group::factory()
             ->count(10)
             ->create();

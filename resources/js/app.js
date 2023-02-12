@@ -7,13 +7,12 @@ import ElementUI from 'element-ui'
 import './assets/elements-variable.scss'
 import locale from 'element-ui/lib/locale/lang/en'
 import router from './router'
-import App from './App.vue';
+import App from './App.vue'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI, {locale})
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
-axios.defaults.baseURL = 'http://university.test/api'
 Vue.use(VueAxios, axios)
 
 new Vue({

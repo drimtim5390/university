@@ -15,13 +15,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('groups/count', [\App\Http\Controllers\GroupController::class, 'count']);
+Route::get('lessons/count', [\App\Http\Controllers\LessonController::class, 'count']);
+Route::get('lessons/timetable', [\App\Http\Controllers\LessonController::class, 'timetable']);
 Route::get('rooms/count', [\App\Http\Controllers\RoomController::class, 'count']);
 Route::get('subjects/count', [\App\Http\Controllers\SubjectController::class, 'count']);
 Route::apiResources([
-    'subjects' => \App\Http\Controllers\SubjectController::class,
-    'teachers' => \App\Http\Controllers\TeacherController::class,
     'groups' => \App\Http\Controllers\GroupController::class,
-    'rooms' => \App\Http\Controllers\RoomController::class
+    'lessons' => \App\Http\Controllers\LessonController::class,
+    'rooms' => \App\Http\Controllers\RoomController::class,
+    'subjects' => \App\Http\Controllers\SubjectController::class,
+    'teachers' => \App\Http\Controllers\TeacherController::class
 ]);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

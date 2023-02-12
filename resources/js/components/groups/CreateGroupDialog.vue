@@ -48,18 +48,16 @@ export default {
       this.$refs['groupCreateForm'].validate((valid) => {
         if (valid) {
           this.$emit('save', this.form)
-          this.$refs['groupCreateForm'].resetFields()
         } else {
           return false
         }
-      });
+      })
     },
     close() {
-      this.$refs['groupCreateForm'].resetFields()
       this.$emit('close')
     },
     validateLabel(rule, value, callback) {
-      this.axios.get('/groups/count?label=' + value)
+      this.axios.get('/api/groups/count?label=' + value)
         .then((response) => {
           if (response.data.length > 0) {
             callback(new Error('Group already exists'))
