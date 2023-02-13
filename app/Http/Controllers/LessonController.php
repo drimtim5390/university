@@ -23,14 +23,7 @@ class LessonController extends Controller
      */
     public function index()
     {
-        $star_date = request()->filled('start_date') ? Carbon::parse(request()->query('start_date')) : Carbon::now()->startOfWeek();
-        $end_date = request()->filled('end_date') ? Carbon::parse(request()->query('end_date')) : Carbon::now()->endOfWeek();
-
         $lessons = $this->lessons
-            ->whereBetween('date', [$star_date->toDateString(), $end_date->toDateString()])
-            ->whereHas('group', function ($query) {
-                $query->orderBy('label');
-            })
             ->orderBy('date', 'asc')
             ->orderBy('position', 'asc')
             ->get();
@@ -39,10 +32,22 @@ class LessonController extends Controller
     }
     public function timetable()
     {
-        $star_date = request()->filled('start_date') ? Carbon::parse(request()->query('start_date')) : Carbon::now()->startOfWeek();
-        $end_date = request()->filled('end_date') ? Carbon::parse(request()->query('end_date')) : Carbon::now()->endOfWeek();
+        $star_date = request()->filled('daterange') ? Carbon::parse(request()->query('daterange')[0]) : Carbon::now()->startOfWeek();
+        $end_date = request()->filled('daterange') ? Carbon::parse(request()->query('daterange')[1]) : Carbon::now()->endOfWeek();
 
         $lessons = $this->lessons
+            ->when(request()->filled('group_ids'), function ($query) {
+                $query->whereIn('group_id', request()->query('group_ids'));
+            })
+            ->when(request()->filled('room_ids'), function ($query) {
+                $query->whereIn('room_id', request()->query('room_ids'));
+            })
+            ->when(request()->filled('teacher_ids'), function ($query) {
+                $query->whereIn('teacher_id', request()->query('teacher_ids'));
+            })
+            ->when(request()->filled('subject_ids'), function ($query) {
+                $query->whereIn('subject_id', request()->query('subject_ids'));
+            })
             ->whereBetween('date', [$star_date->toDateString(), $end_date->toDateString()])
             ->whereHas('group', function ($query) {
                 $query->orderBy('label');
@@ -52,7 +57,7 @@ class LessonController extends Controller
             ->with(['group', 'room', 'subject', 'teacher'])
             ->get();
 
-        $timetable = TimetableFacade::build($lessons);
+        $timetable = TimetableFacade::build($lessons, $star_date, $end_date);
 
         return response()->json($timetable);
     }
