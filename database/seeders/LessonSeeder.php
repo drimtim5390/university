@@ -22,7 +22,7 @@ class LessonSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 1000; $i++) {
+        for ($i = 0; $i < 500; $i++) {
             try {
                 Lesson::factory()
                     ->afterMaking(function ($lesson) {

@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  mariadb:
+    image: docker.io/bitnami/mariadb:10.6
+    environment:
+      - MARIADB_ROOT_USER=root
+      - MARIADB_ROOT_PASSWORD=secret
+      - MARIADB_USER=homestead
+      - MARIADB_PASSWORD=secret
+      - MARIADB_DATABASE=university
+  myapp:
+    image: docker.io/bitnami/laravel:9
+    ports:
+      - 8080:8000
+    environment:
+      - DB_HOST=mariadb
+      - DB_PORT=3306
+      - DB_USERNAME=homestead
+      - DB_PASSWORD=secret
+      - DB_DATABASE=university
+    volumes:
+      - .:/app
+    depends_on:
+      - mariadb
