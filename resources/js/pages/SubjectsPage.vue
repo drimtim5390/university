@@ -53,6 +53,9 @@ import CreateSubjectDialog from "../components/subjects/CreateSubjectDialog.vue"
 import EditSubjectDialog from "../components/subjects/EditSubjectDialog.vue"
 import SubjectsList from "../components/subjects/SubjectsList.vue"
 import DeleteDialog from "../components/DeleteDialog.vue"
+import SubjectService from "../services/SubjectService"
+
+const subjectService = new SubjectService()
 
 export default {
   name: "SubjectsPage",
@@ -89,13 +92,11 @@ export default {
     }
   },
   methods: {
-    async getSubjects() {
-      await this.axios.get('/api/subjects', {
-        params: this.params
-      })
+    getSubjects() {
+      subjectService.get(this.params)
         .then(response => {
-          this.subjects = response.data.data
-          this.total = response.data.total
+          this.subjects = response.data
+          this.total = response.total
         })
         .catch(() => {
           this.subjects = []
@@ -113,7 +114,7 @@ export default {
       this.deleteDialogVisible = true
     },
     storeSubject(subject) {
-      this.axios.post('/api/subjects', subject)
+      subjectService.store(subject)
         .then(() => {
           this.$message({
             message: 'Subject has successfully been created',
@@ -124,7 +125,7 @@ export default {
         })
     },
     updateSubject(subject) {
-      this.axios.put(`/api/subjects/${subject.id}`, subject)
+      subjectService.update(subject)
         .then(() => {
           this.$message({
             message: 'Subject has successfully been updated',
@@ -135,7 +136,7 @@ export default {
         })
     },
     deleteSubject(id) {
-      this.axios.delete(`/api/subjects/${id}`)
+      subjectService.delete(id)
         .then(() => {
           this.$message({
             message: 'Subject has successfully been deleted',

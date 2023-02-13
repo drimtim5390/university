@@ -53,7 +53,9 @@ import CreateRoomDialog from "../components/rooms/CreateRoomDialog.vue"
 import EditRoomDialog from "../components/rooms/EditRoomDialog.vue"
 import RoomsList from "../components/rooms/RoomsList.vue"
 import DeleteDialog from "../components/DeleteDialog.vue"
+import RoomService from "../services/RoomService"
 
+const roomService = new RoomService()
 export default {
   name: "RoomsPage",
   components: {CreateRoomDialog, DeleteDialog, EditRoomDialog, RoomsList},
@@ -90,12 +92,10 @@ export default {
   },
   methods: {
     async getRooms() {
-      await this.axios.get('/api/rooms', {
-        params: this.params
-      })
+      roomService.get(this.params)
         .then(response => {
-          this.rooms = response.data.data
-          this.total = response.data.total
+          this.rooms = response.data
+          this.total = response.total
         })
         .catch(() => {
           this.rooms = []
@@ -113,7 +113,7 @@ export default {
       this.deleteDialogVisible = true
     },
     storeRoom(room) {
-      this.axios.post('/api/rooms', room)
+      roomService.store(room)
         .then(() => {
           this.$message({
             message: 'Room has successfully been created',
@@ -124,7 +124,7 @@ export default {
         })
     },
     updateRoom(room) {
-      this.axios.put(`/api/rooms/${room.id}`, room)
+      roomService.update(room)
         .then(() => {
           this.$message({
             message: 'Room has successfully been updated',
@@ -135,7 +135,7 @@ export default {
         })
     },
     deleteRoom(id) {
-      this.axios.delete(`/api/rooms/${id}`)
+      roomService.delete(id)
         .then(() => {
           this.$message({
             message: 'Room has successfully been deleted',

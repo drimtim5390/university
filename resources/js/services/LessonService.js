@@ -1,8 +1,8 @@
 const axios = require('axios')
-const RESOURCE = '/api/rooms'
-export default class RoomService {
-  async get(params = {}) {
-    const response = await axios.get(RESOURCE, {
+const RESOURCE = '/api/lessons'
+export default class LessonService {
+  async getTimetable(params = {}) {
+    const response = await axios.get(`${RESOURCE}/timetable`, {
       params: params
     })
     return response.data
@@ -15,13 +15,13 @@ export default class RoomService {
     return response.data
   }
 
-  async store(room) {
-    const response = await axios.post(RESOURCE, room)
+  async store(lesson) {
+    const response = await axios.post(RESOURCE, lesson)
     return response.data
   }
 
-  async update(room) {
-    const response = await axios.put(`${RESOURCE}/${room.id}`, room)
+  async update(lesson) {
+    const response = await axios.put(`${RESOURCE}/${lesson.id}`, lesson)
     return response.data
   }
 

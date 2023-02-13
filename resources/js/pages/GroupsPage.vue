@@ -53,6 +53,9 @@ import CreateGroupDialog from "../components/groups/CreateGroupDialog.vue"
 import EditGroupDialog from "../components/groups/EditGroupDialog.vue"
 import GroupsList from "../components/groups/GroupsList.vue"
 import DeleteDialog from "../components/DeleteDialog.vue"
+import GroupService from "../services/GroupService"
+
+const groupService = new GroupService()
 
 export default {
   name: "GroupsPage",
@@ -89,13 +92,11 @@ export default {
     }
   },
   methods: {
-    async getGroups() {
-      await this.axios.get('/api/groups', {
-        params: this.params
-      })
+    getGroups() {
+      groupService.get(this.params)
         .then(response => {
-          this.groups = response.data.data
-          this.total = response.data.total
+          this.groups = response.data
+          this.total = response.total
         })
         .catch(() => {
           this.groups = []
@@ -113,7 +114,7 @@ export default {
       this.deleteDialogVisible = true
     },
     storeGroup(group) {
-      this.axios.post('/api/groups', group)
+      groupService.store(group)
         .then(() => {
           this.$message({
             message: 'Group has successfully been created',
@@ -124,7 +125,7 @@ export default {
         })
     },
     updateGroup(group) {
-      this.axios.put(`/api/groups/${group.id}`, group)
+      groupService.update(group)
         .then(() => {
           this.$message({
             message: 'Group has successfully been updated',
@@ -135,7 +136,7 @@ export default {
         })
     },
     deleteGroup(id) {
-      this.axios.delete(`/api/groups/${id}`)
+      groupService.delete(id)
         .then(() => {
           this.$message({
             message: 'Group has successfully been deleted',

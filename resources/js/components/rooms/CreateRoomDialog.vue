@@ -13,6 +13,10 @@
 </template>
 
 <script>
+import RoomService from "../../services/RoomService"
+
+const roomService = new RoomService()
+
 export default {
   name: "CreateRoomDialog",
   props: {
@@ -59,9 +63,9 @@ export default {
       this.$emit('close')
     },
     validateLabel(rule, value, callback) {
-      this.axios.get('/api/rooms/count?label=' + value)
+      roomService.count({label: value})
         .then((response) => {
-          if (response.data.length > 0) {
+          if (response.length > 0) {
             callback(new Error('Room already exists'))
           } else {
             callback()

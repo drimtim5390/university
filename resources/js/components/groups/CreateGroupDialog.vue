@@ -13,6 +13,10 @@
 </template>
 
 <script>
+import GroupService from "../../services/GroupService"
+
+const groupService = new GroupService()
+
 export default {
   name: "CreateGroupDialog",
   props: {
@@ -57,9 +61,9 @@ export default {
       this.$emit('close')
     },
     validateLabel(rule, value, callback) {
-      this.axios.get('/api/groups/count?label=' + value)
+      groupService.count({label: value})
         .then((response) => {
-          if (response.data.length > 0) {
+          if (response.length > 0) {
             callback(new Error('Group already exists'))
           } else {
             callback()

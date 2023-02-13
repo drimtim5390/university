@@ -99,11 +99,13 @@ import CreateLessonDialog from "../components/lessons/CreateLessonDialog.vue"
 import TimetableList from "../components/lessons/TimetableList.vue"
 import EditLessonDialog from "../components/lessons/EditLessonDialog.vue"
 import DeleteDialog from "../components/DeleteDialog.vue"
+import LessonService from "../services/LessonService"
 import GroupService from "../services/GroupService"
 import RoomService from "../services/RoomService"
 import TeacherService from "../services/TeacherService"
 import SubjectService from "../services/SubjectService"
 
+const lessonsService = new LessonService()
 const groupService = new GroupService()
 const roomService = new RoomService()
 const teacherService = new TeacherService()
@@ -137,45 +139,45 @@ export default {
         shortcuts: [{
           text: 'This week',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            end.setTime(end.getTime() + 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', [start, end]);
+            const end = new Date()
+            const start = new Date()
+            end.setTime(end.getTime() + 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
           }
         }, {
           text: 'Last week',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-            picker.$emit('pick', [start, end]);
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+            picker.$emit('pick', [start, end])
           }
         }, {
           text: 'Last month',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-            picker.$emit('pick', [start, end]);
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+            picker.$emit('pick', [start, end])
           }
         }, {
           text: 'Last 3 months',
           onClick(picker) {
-            const end = new Date();
-            const start = new Date();
-            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-            picker.$emit('pick', [start, end]);
+            const end = new Date()
+            const start = new Date()
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+            picker.$emit('pick', [start, end])
           }
         }]
       }
     }
   },
   mounted() {
-    this.getTimetable(),
-    groupService.get().then(response => this.relationships.groups = response.data)
-    roomService.get().then(response => this.relationships.rooms = response.data)
-    teacherService.get().then(response => this.relationships.teachers = response.data)
-    subjectService.get().then(response => this.relationships.subjects = response.data)
+    this.getTimetable()
+    groupService.get({size: 1000}).then(response => this.relationships.groups = response.data)
+    roomService.get({size: 1000}).then(response => this.relationships.rooms = response.data)
+    teacherService.get({size: 1000}).then(response => this.relationships.teachers = response.data)
+    subjectService.get({size: 1000}).then(response => this.relationships.subjects = response.data)
   },
   watch: {
     filter: {
@@ -189,12 +191,10 @@ export default {
     }
   },
   methods: {
-    async getTimetable() {
-      await this.axios.get('/api/lessons/timetable', {
-        params: this.filter
-      })
+    getTimetable() {
+      lessonsService.getTimetable(this.filter)
         .then(response => {
-          this.timetable = response.data
+          this.timetable = response
         })
         .catch(() => {
           this.timetable = []
@@ -214,7 +214,7 @@ export default {
       this.deleteDialogVisible = true
     },
     storeLesson(lesson) {
-      this.axios.post('/api/lessons', lesson)
+      lessonsService.store(lesson)
         .then(() => {
           this.$message({
             message: 'Lesson has successfully been created',
@@ -225,7 +225,7 @@ export default {
         })
     },
     updateLesson(lesson) {
-      this.axios.put(`/api/lessons/${lesson.id}`, lesson)
+      lessonsService.update(lesson)
         .then(() => {
           this.$message({
             message: 'Lesson has successfully been updated',
@@ -236,7 +236,7 @@ export default {
         })
     },
     deleteLesson(id) {
-      this.axios.delete(`/api/lessons/${id}`)
+      lessonsService.delete(id)
         .then(() => {
           this.$message({
             message: 'Lesson has successfully been deleted',

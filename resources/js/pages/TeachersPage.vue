@@ -53,6 +53,9 @@ import CreateTeacherDialog from "../components/teachers/CreateTeacherDialog.vue"
 import EditTeacherDialog from "../components/teachers/EditTeacherDialog.vue"
 import TeachersList from "../components/teachers/TeachersList.vue"
 import DeleteDialog from "../components/DeleteDialog.vue"
+import TeacherService from "../services/TeacherService"
+
+const teacherService = new TeacherService()
 
 export default {
   name: "TeachersPage",
@@ -89,13 +92,11 @@ export default {
     }
   },
   methods: {
-    async getTeachers() {
-      await this.axios.get('/api/teachers', {
-        params: this.params
-      })
+    getTeachers() {
+      teacherService.get(this.params)
         .then(response => {
-          this.teachers = response.data.data
-          this.total = response.data.total
+          this.teachers = response.data
+          this.total = response.total
         })
         .catch(() => {
           this.teachers = []
@@ -113,7 +114,7 @@ export default {
       this.deleteDialogVisible = true
     },
     storeTeacher(teacher) {
-      this.axios.post('/api/teachers', teacher)
+      teacherService.store(teacher)
         .then(() => {
           this.$message({
             message: 'Teacher has successfully been created',
@@ -124,7 +125,7 @@ export default {
         })
     },
     updateTeacher(teacher) {
-      this.axios.put(`/api/teachers/${teacher.id}`, teacher)
+      teacherService.update(teacher)
         .then(() => {
           this.$message({
             message: 'Teacher has successfully been updated',
@@ -135,7 +136,7 @@ export default {
         })
     },
     deleteTeacher(id) {
-      this.axios.delete(`/api/teachers/${id}`)
+      teacherService.delete(id)
         .then(() => {
           this.$message({
             message: 'Teacher has successfully been deleted',

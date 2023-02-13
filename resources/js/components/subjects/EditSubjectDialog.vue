@@ -13,6 +13,10 @@
 </template>
 
 <script>
+import SubjectService from "../../services/SubjectService"
+
+const subjectService = new SubjectService()
+
 export default {
   name: "EditSubjectDialog",
   props: {
@@ -58,10 +62,10 @@ export default {
       this.$emit('close')
     },
     validateName(rule, value, callback) {
-      this.axios.get('/api/subjects/count?name=' + value)
+      subjectService.count({name: value})
         .then((response) => {
-          if ((response.data.length === 0) ||
-              (response.data.length === 1 && response.data[0] === this.subject.id)) {
+          if ((response.length === 0) ||
+              (response.length === 1 && response[0] === this.subject.id)) {
             callback()
           } else {
             callback(new Error('Subject already exists'))

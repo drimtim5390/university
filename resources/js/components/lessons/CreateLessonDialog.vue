@@ -70,11 +70,13 @@
   </el-dialog>
 </template>
 <script>
+import LessonService from "../../services/LessonService"
 import GroupService from "../../services/GroupService"
 import RoomService from "../../services/RoomService"
 import TeacherService from "../../services/TeacherService"
 import SubjectService from "../../services/SubjectService"
 
+const lessonService = new LessonService()
 const groupService = new GroupService()
 const roomService = new RoomService()
 const teacherService = new TeacherService()
@@ -94,10 +96,10 @@ export default {
         if (this.lesson) {
           this.form.fill(this.lesson)
         }
-        groupService.get().then(response => this.groups = response.data)
-        roomService.get().then(response => this.rooms = response.data)
-        teacherService.get().then(response => this.teachers = response.data)
-        subjectService.get().then(response => this.subjects = response.data)
+        groupService.get({size: 1000}).then(response => this.groups = response.data)
+        roomService.get({size: 1000}).then(response => this.rooms = response.data)
+        teacherService.get({size: 1000}).then(response => this.teachers = response.data)
+        subjectService.get({size: 1000}).then(response => this.subjects = response.data)
       }
     }
   },
@@ -172,59 +174,44 @@ export default {
     validateGroup(rule, value, callback) {
       if (this.form.date === null || this.form.position === null || this.form.group_id === null) {
         callback()
+      } else {
+        lessonService.count({date: this.form.date, position: this.form.position, group_id: this.form.group_id})
+          .then((response) => {
+            if (response.length > 0) {
+              callback(new Error('Group is on another lesson at this date and time'))
+            } else {
+              callback()
+            }
+          })
       }
-      this.axios.get('/api/lessons/count', {
-        params: {
-          date: this.form.date,
-          position: this.form.position,
-          group_id: this.form.group_id
-        }
-      })
-        .then((response) => {
-          if (response.data.length > 0) {
-            callback(new Error('Group is on another lesson at this date and time'))
-          } else {
-            callback()
-          }
-        })
     },
     validateRoom(rule, value, callback) {
       if (this.form.date === null || this.form.position === null || this.form.room_id === null) {
         callback()
+      } else {
+        lessonService.count({date: this.form.date, position: this.form.position, group_id: this.form.group_id})
+          .then((response) => {
+            if (response.length > 0) {
+              callback(new Error('Room is busy at this date and time'))
+            } else {
+              callback()
+            }
+          })
       }
-      this.axios.get('/api/lessons/count', {
-        params: {
-          date: this.form.date,
-          position: this.form.position,
-          room_id: this.form.room_id
-        }
-      })
-        .then((response) => {
-          if (response.data.length > 0) {
-            callback(new Error('Room is busy at this date and time'))
-          } else {
-            callback()
-          }
-        })
     },
     validateTeacher(rule, value, callback) {
       if (this.form.date === null || this.form.position === null || this.form.teacher_id === null) {
         callback()
+      } else {
+        lessonService.count({date: this.form.date, position: this.form.position, group_id: this.form.group_id})
+          .then((response) => {
+            if (response.length > 0) {
+              callback(new Error('Teacher is on another lesson at this date and time'))
+            } else {
+              callback()
+            }
+          })
       }
-      this.axios.get('/api/lessons/count', {
-        params: {
-          date: this.form.date,
-          position: this.form.position,
-          teacher_id: this.form.teacher_id
-        }
-      })
-        .then((response) => {
-          if (response.data.length > 0) {
-            callback(new Error('Teacher is on another lesson at this date and time'))
-          } else {
-            callback()
-          }
-        })
     }
   }
 }
